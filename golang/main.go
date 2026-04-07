@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"slices"
+	"strings"
 )
 
 func main() {
@@ -168,4 +169,49 @@ func containsDuplicate(nums []int) bool {
 		seen[v] = struct{}{}
 	}
 	return false
+}
+
+func doGroupAnagrams() error {
+	tests := []struct {
+		strs []string
+		want [][]string
+	}{{
+		strs: []string{"eat", "tea", "tan", "ate", "nat", "bat"},
+		want: [][]string{{"eat", "tea", "ate"}, {"tan", "nat"}, {"bat"}},
+	}, {
+		strs: []string{""},
+		want: [][]string{{""}},
+	}, {
+		strs: []string{"a"},
+		want: [][]string{{"a"}},
+	}}
+	for i, test := range tests {
+		got := groupAnagrams(test.strs)
+		if len(got) != len(test.want) {
+			return fmt.Errorf("groupAnagrams wrong at index %d got %d groups want %d", i, len(got), len(test.want))
+		}
+		// Sort inner slices and outer slice for comparison.
+		for _, g := range got {
+			slices.Sort(g)
+		}
+		for _, g := range test.want {
+			slices.Sort(g)
+		}
+		slices.SortFunc(got, func(a, b []string) int {
+			return strings.Compare(a[0], b[0])
+		})
+		slices.SortFunc(test.want, func(a, b []string) int {
+			return strings.Compare(a[0], b[0])
+		})
+		for j := range got {
+			if !slices.Equal(got[j], test.want[j]) {
+				return fmt.Errorf("groupAnagrams wrong at index %d group %d got %v want %v", i, j, got[j], test.want[j])
+			}
+		}
+	}
+	return nil
+}
+
+func groupAnagrams(strs []string) [][]string {
+	return nil
 }
