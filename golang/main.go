@@ -88,7 +88,7 @@ func optimalTwoSum(nums []int, target int) []int {
 	want := make(map[int]int)
 	for i := 0; i < len(nums); i++ {
 		if widx, ok := want[nums[i]]; ok {
-			return []int{i, widx}
+			return []int{widx, i}
 		}
 		want[target-nums[i]] = i
 	}
