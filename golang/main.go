@@ -65,7 +65,7 @@ func doTwoSums() error {
 		if !slices.Equal(test.output, output) {
 			return fmt.Errorf("brute force bad output at index %d got %v want %v", i, output, test.output)
 		}
-		output := OptimalTwoSum(test.inputs, test.target)
+		output = optimalTwoSum(test.inputs, test.target)
 		if !slices.Equal(test.output, output) {
 			return fmt.Errorf("optimal bad output at index %d got %v want %v", i, output, test.output)
 		}
@@ -85,5 +85,18 @@ func bruteTwoSum(nums []int, target int) []int {
 }
 
 func optimalTwoSum(nums []int, target int) []int {
+	seen := make(map[int]int)
+	for i := 0; i < len(nums); i++ {
+		for j := i + 1; j < len(nums); j++ {
+			if seen[nums[i]] == nums[j] {
+				continue
+			}
+			if nums[i]+nums[j] == target {
+				return []int{i, j}
+			}
+			seen[nums[j]] = nums[i]
+			seen[nums[i]] = nums[j]
+		}
+	}
 	return nil
 }
