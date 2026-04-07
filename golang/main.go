@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println(doContainsDuplicate())
+	fmt.Println(doGroupAnagrams())
 }
 
 func doTwoSums() error {
@@ -114,30 +114,6 @@ func isAnagram(s string, t string) bool {
 	return true
 }
 
-//# Contains Duplicate
-//
-//Given an integer array `nums`, return `true` if any value appears at least twice in the array, and `false` if every element is distinct.
-//
-//## Examples
-//
-//```
-//Input: nums = [1, 2, 3, 1]
-//Output: true
-//
-//Input: nums = [1, 2, 3, 4]
-//Output: false
-//
-//Input: nums = [1, 1, 1, 3, 3, 4, 3, 2, 4, 2]
-//Output: true
-//```
-//
-//## Function Signature
-//
-//```go
-//func containsDuplicate(nums []int) bool {
-//
-//}
-
 func doContainsDuplicate() error {
 	tests := []struct {
 		nums []int
@@ -170,6 +146,35 @@ func containsDuplicate(nums []int) bool {
 	}
 	return false
 }
+
+//# Group Anagrams
+//
+//Given an array of strings `strs`, group the anagrams together. You can return the answer in any order.
+//
+//## Examples
+//
+//```
+//Input: strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+//Output: [["bat"], ["nat", "tan"], ["ate", "eat", "tea"]]
+//
+//Input: strs = [""]
+//Output: [[""]]
+//
+//Input: strs = ["a"]
+//Output: [["a"]]
+//```
+//
+//## Function Signature
+//
+//```go
+//func groupAnagrams(strs []string) [][]string {
+//
+//}
+//```
+//
+//## Hint
+//
+//How can you create a key that is the same for all anagrams of a word?
 
 func doGroupAnagrams() error {
 	tests := []struct {
@@ -212,6 +217,18 @@ func doGroupAnagrams() error {
 	return nil
 }
 
-func groupAnagrams(strs []string) [][]string {
-	return nil
+func groupAnagrams(strs []string) (grouped [][]string) {
+	anagrams := make(map[[26]byte][]string)
+	zVal := byte('z')
+	for _, w := range strs {
+		key := [26]byte{}
+		for _, r := range w {
+			key[zVal-byte(r)]++
+		}
+		anagrams[key] = append(anagrams[key], w)
+	}
+	for _, group := range anagrams {
+		grouped = append(grouped, group)
+	}
+	return
 }
