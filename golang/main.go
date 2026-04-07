@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println(doTopKFrequent())
+	fmt.Println(doProductExceptSelf())
 }
 
 func doTwoSums() error {
@@ -204,35 +204,6 @@ func groupAnagrams(strs []string) (grouped [][]string) {
 	return
 }
 
-//# Top K Frequent Elements
-//
-//Given an integer array `nums` and an integer `k`, return the `k` most frequent elements. You may return the answer in any order.
-//
-//## Examples
-//
-//```
-//Input: nums = [1, 1, 1, 2, 2, 3], k = 2
-//Output: [1, 2]
-//
-//Input: nums = [1], k = 1
-//Output: [1]
-//
-//Input: nums = [4, 4, 4, 1, 1, 2, 2, 2, 3], k = 2
-//Output: [4, 2]
-//```
-//
-//## Function Signature
-//
-//```go
-//func topKFrequent(nums []int, k int) []int {
-//
-//}
-//```
-//
-//## Hint
-//
-//Count frequencies first. Then think about how to efficiently find the top k without sorting everything.
-
 func doTopKFrequent() error {
 	tests := []struct {
 		nums []int
@@ -281,6 +252,34 @@ func topKFrequent(nums []int, n int) []int {
 	return result
 }
 
+//# Product of Array Except Self
+//
+//Given an integer array `nums`, return an array `answer` where `answer[i]` is equal to the product of all the elements of `nums` except `nums[i]`.
+//
+//You must solve it without using division.
+//
+//## Examples
+//
+//```
+//Input: nums = [1, 2, 3, 4]
+//Output: [24, 12, 8, 6]
+//
+//Input: nums = [-1, 1, 0, -3, 3]
+//Output: [0, 0, 9, 0, 0]
+//```
+//
+//## Function Signature
+//
+//```go
+//func productExceptSelf(nums []int) []int {
+//
+//}
+//```
+//
+//## Hint
+//
+//Think about what's to the left of each element and what's to the right.
+
 func doProductExceptSelf() error {
 	tests := []struct {
 		nums []int
@@ -302,5 +301,13 @@ func doProductExceptSelf() error {
 }
 
 func productExceptSelf(nums []int) []int {
-	return nil
+	answer := make([]int, len(nums))
+	answer[0] = 1
+	for i := 1; i < len(nums); i++ {
+		answer[i] = answer[i-1] * nums[i-1]
+	}
+	for i := len(nums) - 2; i >= 0; i-- {
+		answer[i] = answer[i+1] * nums[i+1]
+	}
+	return answer
 }
