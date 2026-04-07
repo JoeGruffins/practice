@@ -9,39 +9,6 @@ func main() {
 	fmt.Println(doTwoSums())
 }
 
-//# Two Sum
-//
-//Given an array of integers `nums` and an integer `target`, return the indices of the two numbers that add up to `target`.
-//
-//- Each input has exactly one solution
-//- You can't use the same element twice
-//- Return the answer in any order
-//
-//## Examples
-//
-//```
-//Input: nums = [2, 7, 11, 15], target = 9
-//Output: [0, 1]   (because 2 + 7 = 9)
-//
-//Input: nums = [3, 2, 4], target = 6
-//Output: [1, 2]   (because 2 + 4 = 6)
-//
-//Input: nums = [3, 3], target = 6
-//Output: [0, 1]
-//```
-//
-//## Function Signature
-//
-//```go
-//func twoSum(nums []int, target int) []int {
-//
-//}
-//```
-//
-//## Try to solve it two ways:
-//1. The brute force way (easy, but slow)
-//2. The optimal way (think about what data structure lets you look things up fast)
-
 func doTwoSums() error {
 	tests := []struct {
 		inputs []int
@@ -93,4 +60,75 @@ func optimalTwoSum(nums []int, target int) []int {
 		want[target-nums[i]] = i
 	}
 	return nil
+}
+
+//# Valid Anagram
+//
+//Given two strings `s` and `t`, return `true` if `t` is an anagram of `s`, and `false` otherwise.
+//
+//An anagram uses all the original letters exactly once, rearranged.
+//
+//## Examples
+//
+//```
+//Input: s = "anagram", t = "nagaram"
+//Output: true
+//
+//Input: s = "rat", t = "car"
+//Output: false
+//
+//Input: s = "listen", t = "silent"
+//Output: true
+//```
+//
+//## Function Signature
+//
+//```go
+//func isAnagram(s string, t string) bool {
+//
+//}
+//```
+//
+//## Try to solve it two ways:
+//1. The simple way (sort both strings and compare)
+//2. The optimal way (think about counting)
+
+func doIsAnagram() error {
+	tests := []struct {
+		s, t string
+		want bool
+	}{{
+		s:    "anagram",
+		t:    "nagaram",
+		want: true,
+	}, {
+		s: "rat",
+		t: "car",
+	}, {
+		s:    "listen",
+		t:    "silent",
+		want: true,
+	}}
+	for i, test := range tests {
+		is := isAnagram(test.s, test.t)
+		if test.want != is {
+			return fmt.Errorf("isanagram wrong at index %d", i)
+		}
+	}
+	return nil
+}
+
+func isAnagram(s string, t string) bool {
+	if len(s) != len(t) {
+		return false
+	}
+	getValue := func(w string) uint32 {
+		var total uint32
+		for _, r := range w {
+			x := uint32('z') - uint32(r)
+			total += 1 >> x
+		}
+		return total
+	}
+	return getValue(s) == getValue(t)
 }
