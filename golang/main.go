@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	fmt.Println(doIsAnagram())
+	fmt.Println(doContainsDuplicate())
 }
 
 func doTwoSums() error {
@@ -62,37 +62,6 @@ func optimalTwoSum(nums []int, target int) []int {
 	return nil
 }
 
-//# Valid Anagram
-//
-//Given two strings `s` and `t`, return `true` if `t` is an anagram of `s`, and `false` otherwise.
-//
-//An anagram uses all the original letters exactly once, rearranged.
-//
-//## Examples
-//
-//```
-//Input: s = "anagram", t = "nagaram"
-//Output: true
-//
-//Input: s = "rat", t = "car"
-//Output: false
-//
-//Input: s = "listen", t = "silent"
-//Output: true
-//```
-//
-//## Function Signature
-//
-//```go
-//func isAnagram(s string, t string) bool {
-//
-//}
-//```
-//
-//## Try to solve it two ways:
-//1. The simple way (sort both strings and compare)
-//2. The optimal way (think about counting)
-
 func doIsAnagram() error {
 	tests := []struct {
 		s, t string
@@ -144,6 +113,30 @@ func isAnagram(s string, t string) bool {
 	return true
 }
 
+//# Contains Duplicate
+//
+//Given an integer array `nums`, return `true` if any value appears at least twice in the array, and `false` if every element is distinct.
+//
+//## Examples
+//
+//```
+//Input: nums = [1, 2, 3, 1]
+//Output: true
+//
+//Input: nums = [1, 2, 3, 4]
+//Output: false
+//
+//Input: nums = [1, 1, 1, 3, 3, 4, 3, 2, 4, 2]
+//Output: true
+//```
+//
+//## Function Signature
+//
+//```go
+//func containsDuplicate(nums []int) bool {
+//
+//}
+
 func doContainsDuplicate() error {
 	tests := []struct {
 		nums []int
@@ -167,5 +160,12 @@ func doContainsDuplicate() error {
 }
 
 func containsDuplicate(nums []int) bool {
+	seen := make(map[int]struct{})
+	for _, v := range nums {
+		if _, has := seen[v]; has {
+			return true
+		}
+		seen[v] = struct{}{}
+	}
 	return false
 }
