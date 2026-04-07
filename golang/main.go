@@ -265,22 +265,18 @@ func doTopKFrequent() error {
 	return nil
 }
 
-func topKFrequent(nums []int, k int) []int {
+func topKFrequent(nums []int, n int) []int {
 	seen := make(map[int]int)
 	for _, v := range nums {
 		seen[v]++
 	}
-	topValues, topKeys := make([]int, k), make([]int, k)
+	buckets := make([][]int, len(nums)+1)
 	for k, v := range seen {
-		for i := range topValues {
-			if topValues[i] < v {
-				copy(topValues[i+1:], topValues[i:])
-				topValues[i] = v
-				copy(topKeys[i+1:], topKeys[i:])
-				topKeys[i] = k
-				break
-			}
-		}
+		buckets[v] = append(buckets[v], k)
 	}
-	return topKeys
+	var result []int
+	for i := len(buckets) - 1; i >= 0 && len(result) < n; i-- {
+		result = append(result, buckets[i]...)
+	}
+	return result
 }
