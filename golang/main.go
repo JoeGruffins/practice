@@ -232,3 +232,39 @@ func groupAnagrams(strs []string) (grouped [][]string) {
 	}
 	return
 }
+
+func doTopKFrequent() error {
+	tests := []struct {
+		nums []int
+		k    int
+		want []int
+	}{{
+		nums: []int{1, 1, 1, 2, 2, 3},
+		k:    2,
+		want: []int{1, 2},
+	}, {
+		nums: []int{1},
+		k:    1,
+		want: []int{1},
+	}, {
+		nums: []int{4, 4, 4, 1, 1, 2, 2, 2, 3},
+		k:    2,
+		want: []int{4, 2},
+	}}
+	for i, test := range tests {
+		got := topKFrequent(test.nums, test.k)
+		if len(got) != len(test.want) {
+			return fmt.Errorf("topKFrequent wrong at index %d got %v want %v", i, got, test.want)
+		}
+		slices.Sort(got)
+		slices.Sort(test.want)
+		if !slices.Equal(got, test.want) {
+			return fmt.Errorf("topKFrequent wrong at index %d got %v want %v", i, got, test.want)
+		}
+	}
+	return nil
+}
+
+func topKFrequent(nums []int, k int) []int {
+	return nil
+}
