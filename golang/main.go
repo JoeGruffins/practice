@@ -85,18 +85,12 @@ func bruteTwoSum(nums []int, target int) []int {
 }
 
 func optimalTwoSum(nums []int, target int) []int {
-	seen := make(map[int]int)
+	want := make(map[int]int)
 	for i := 0; i < len(nums); i++ {
-		for j := i + 1; j < len(nums); j++ {
-			if seen[nums[i]] == nums[j] {
-				continue
-			}
-			if nums[i]+nums[j] == target {
-				return []int{i, j}
-			}
-			seen[nums[j]] = nums[i]
-			seen[nums[i]] = nums[j]
+		if widx, ok := want[nums[i]]; ok {
+			return []int{i, widx}
 		}
+		want[target-nums[i]] = i
 	}
 	return nil
 }
