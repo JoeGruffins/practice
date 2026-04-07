@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println(doGroupAnagrams())
+	fmt.Println(doTopKFrequent())
 }
 
 func doTwoSums() error {
@@ -147,35 +147,6 @@ func containsDuplicate(nums []int) bool {
 	return false
 }
 
-//# Group Anagrams
-//
-//Given an array of strings `strs`, group the anagrams together. You can return the answer in any order.
-//
-//## Examples
-//
-//```
-//Input: strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
-//Output: [["bat"], ["nat", "tan"], ["ate", "eat", "tea"]]
-//
-//Input: strs = [""]
-//Output: [[""]]
-//
-//Input: strs = ["a"]
-//Output: [["a"]]
-//```
-//
-//## Function Signature
-//
-//```go
-//func groupAnagrams(strs []string) [][]string {
-//
-//}
-//```
-//
-//## Hint
-//
-//How can you create a key that is the same for all anagrams of a word?
-
 func doGroupAnagrams() error {
 	tests := []struct {
 		strs []string
@@ -233,6 +204,35 @@ func groupAnagrams(strs []string) (grouped [][]string) {
 	return
 }
 
+//# Top K Frequent Elements
+//
+//Given an integer array `nums` and an integer `k`, return the `k` most frequent elements. You may return the answer in any order.
+//
+//## Examples
+//
+//```
+//Input: nums = [1, 1, 1, 2, 2, 3], k = 2
+//Output: [1, 2]
+//
+//Input: nums = [1], k = 1
+//Output: [1]
+//
+//Input: nums = [4, 4, 4, 1, 1, 2, 2, 2, 3], k = 2
+//Output: [4, 2]
+//```
+//
+//## Function Signature
+//
+//```go
+//func topKFrequent(nums []int, k int) []int {
+//
+//}
+//```
+//
+//## Hint
+//
+//Count frequencies first. Then think about how to efficiently find the top k without sorting everything.
+
 func doTopKFrequent() error {
 	tests := []struct {
 		nums []int
@@ -266,5 +266,21 @@ func doTopKFrequent() error {
 }
 
 func topKFrequent(nums []int, k int) []int {
-	return nil
+	seen := make(map[int]int)
+	for _, v := range nums {
+		seen[v]++
+	}
+	topValues, topKeys := make([]int, k), make([]int, k)
+	for k, v := range seen {
+		for i := range topValues {
+			if topValues[i] < v {
+				copy(topValues[i+1:], topValues[i:])
+				topValues[i] = v
+				copy(topKeys[i+1:], topKeys[i:])
+				topKeys[i] = k
+				break
+			}
+		}
+	}
+	return topKeys
 }
