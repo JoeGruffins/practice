@@ -219,11 +219,11 @@ func doGroupAnagrams() error {
 
 func groupAnagrams(strs []string) (grouped [][]string) {
 	anagrams := make(map[[26]byte][]string)
-	zVal := byte('z')
+	aVal := byte('a')
 	for _, w := range strs {
 		key := [26]byte{}
 		for _, r := range w {
-			key[zVal-byte(r)]++
+			key[byte(r)-aVal]++
 		}
 		anagrams[key] = append(anagrams[key], w)
 	}
