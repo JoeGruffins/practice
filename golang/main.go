@@ -108,6 +108,15 @@ func doIsAnagram() error {
 		s:    "listen",
 		t:    "silent",
 		want: true,
+	}, {
+		s: "aab",
+		t: "bba",
+	}, {
+		s: "ad",
+		t: "bc",
+	}, {
+		s: "acc",
+		t: "bbb",
 	}}
 	for i, test := range tests {
 		is := isAnagram(test.s, test.t)
