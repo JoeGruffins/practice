@@ -143,3 +143,29 @@ func isAnagram(s string, t string) bool {
 	}
 	return true
 }
+
+func doContainsDuplicate() error {
+	tests := []struct {
+		nums []int
+		want bool
+	}{{
+		nums: []int{1, 2, 3, 1},
+		want: true,
+	}, {
+		nums: []int{1, 2, 3, 4},
+	}, {
+		nums: []int{1, 1, 1, 3, 3, 4, 3, 2, 4, 2},
+		want: true,
+	}}
+	for i, test := range tests {
+		got := containsDuplicate(test.nums)
+		if test.want != got {
+			return fmt.Errorf("containsDuplicate wrong at index %d got %v want %v", i, got, test.want)
+		}
+	}
+	return nil
+}
+
+func containsDuplicate(nums []int) bool {
+	return false
+}
