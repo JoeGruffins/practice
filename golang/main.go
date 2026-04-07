@@ -280,3 +280,27 @@ func topKFrequent(nums []int, n int) []int {
 	}
 	return result
 }
+
+func doProductExceptSelf() error {
+	tests := []struct {
+		nums []int
+		want []int
+	}{{
+		nums: []int{1, 2, 3, 4},
+		want: []int{24, 12, 8, 6},
+	}, {
+		nums: []int{-1, 1, 0, -3, 3},
+		want: []int{0, 0, 9, 0, 0},
+	}}
+	for i, test := range tests {
+		got := productExceptSelf(test.nums)
+		if !slices.Equal(got, test.want) {
+			return fmt.Errorf("productExceptSelf wrong at index %d got %v want %v", i, got, test.want)
+		}
+	}
+	return nil
+}
+
+func productExceptSelf(nums []int) []int {
+	return nil
+}
