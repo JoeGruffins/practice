@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	fmt.Println(doTwoSums())
+	fmt.Println(doIsAnagram())
 }
 
 func doTwoSums() error {
@@ -126,7 +126,7 @@ func isAnagram(s string, t string) bool {
 		var total uint32
 		for _, r := range w {
 			x := uint32('z') - uint32(r)
-			total += 1 >> x
+			total += 1 << x
 		}
 		return total
 	}
