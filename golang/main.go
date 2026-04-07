@@ -131,13 +131,15 @@ func isAnagram(s string, t string) bool {
 	if len(s) != len(t) {
 		return false
 	}
-	getValue := func(w string) uint32 {
-		var total uint32
-		for _, r := range w {
-			x := uint32('z') - uint32(r)
-			total += 1 << x
-		}
-		return total
+	seen := make(map[rune]int)
+	for _, r := range s {
+		seen[r]++
 	}
-	return getValue(s) == getValue(t)
+	for _, r := range t {
+		if seen[r] == 0 {
+			return false
+		}
+		seen[r]--
+	}
+	return true
 }
