@@ -313,3 +313,30 @@ func productExceptSelf(nums []int) []int {
 	}
 	return answer
 }
+
+func doLongestConsecutive() error {
+	tests := []struct {
+		nums []int
+		want int
+	}{{
+		nums: []int{100, 4, 200, 1, 3, 2},
+		want: 4,
+	}, {
+		nums: []int{0, 3, 7, 2, 5, 8, 4, 6, 0, 1},
+		want: 9,
+	}, {
+		nums: nil,
+		want: 0,
+	}}
+	for i, test := range tests {
+		got := longestConsecutive(test.nums)
+		if got != test.want {
+			return fmt.Errorf("longestConsecutive wrong at index %d got %d want %d", i, got, test.want)
+		}
+	}
+	return nil
+}
+
+func longestConsecutive(nums []int) int {
+	return 0
+}
