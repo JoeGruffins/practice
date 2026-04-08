@@ -379,3 +379,29 @@ func longestConsecutive(nums []int) int {
 	}
 	return currentLargest
 }
+
+func doIsPalindrome() error {
+	tests := []struct {
+		s    string
+		want bool
+	}{{
+		s:    "A man, a plan, a canal: Panama",
+		want: true,
+	}, {
+		s: "race a car",
+	}, {
+		s:    " ",
+		want: true,
+	}}
+	for i, test := range tests {
+		got := isPalindrome(test.s)
+		if got != test.want {
+			return fmt.Errorf("isPalindrome wrong at index %d got %v want %v", i, got, test.want)
+		}
+	}
+	return nil
+}
+
+func isPalindrome(s string) bool {
+	return false
+}
