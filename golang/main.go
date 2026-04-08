@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println(doProductExceptSelf())
+	fmt.Println(doLongestConsecutive())
 }
 
 func doTwoSums() error {
@@ -301,18 +301,39 @@ func doProductExceptSelf() error {
 }
 
 func productExceptSelf(nums []int) []int {
-	answer := make([]int, len(nums))
-	answer[0] = 1
-	for i := 1; i < len(nums); i++ {
-		answer[i] = answer[i-1] * nums[i-1]
-	}
-	product := 1
-	for i := len(nums) - 2; i >= 0; i-- {
-		product *= nums[i+1]
-		answer[i] *= product
-	}
-	return answer
+	return nil
 }
+
+//# Longest Consecutive Sequence
+//
+//Given an unsorted array of integers `nums`, return the length of the longest consecutive elements sequence.
+//
+//Must run in O(n) time.
+//
+//## Examples
+//
+//```
+//Input: nums = [100, 4, 200, 1, 3, 2]
+//Output: 4    (the sequence is [1, 2, 3, 4])
+//
+//Input: nums = [0, 3, 7, 2, 5, 8, 4, 6, 0, 1]
+//Output: 9    (the sequence is [0, 1, 2, 3, 4, 5, 6, 7, 8])
+//
+//Input: nums = []
+//Output: 0
+//```
+//
+//## Function Signature
+//
+//```go
+//func longestConsecutive(nums []int) int {
+//
+//}
+//```
+//
+//## Hint
+//
+//Put everything in a set. A number is the start of a sequence if num-1 is NOT in the set.
 
 func doLongestConsecutive() error {
 	tests := []struct {
@@ -338,5 +359,25 @@ func doLongestConsecutive() error {
 }
 
 func longestConsecutive(nums []int) int {
-	return 0
+	currentLargest := 0
+	set := make(map[int]struct{})
+	for _, n := range nums {
+		set[n] = struct{}{}
+	}
+	for k := range set {
+		if _, has := set[k-1]; !has {
+			delete(set, k)
+			i := 1
+			for ; ; i++ {
+				if _, has := set[k+i]; !has {
+					break
+				}
+				delete(set, k+i)
+			}
+			if i > currentLargest {
+				currentLargest = i
+			}
+		}
+	}
+	return currentLargest
 }
