@@ -368,11 +368,9 @@ func longestConsecutive(nums []int) int {
 		if _, has := set[k-1]; !has {
 			delete(set, k)
 			i := 1
-			for ; ; i++ {
-				if _, has := set[k+i]; !has {
-					break
-				}
+			for _, has := set[k+i]; has; _, has = set[k+i] {
 				delete(set, k+i)
+				i++
 			}
 			if i > currentLargest {
 				currentLargest = i
