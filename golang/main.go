@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 	"slices"
 	"strings"
 )
 
 func main() {
-	fmt.Println(doLongestConsecutive())
+	fmt.Println(doIsPalindrome())
 }
 
 func doTwoSums() error {
@@ -304,37 +305,6 @@ func productExceptSelf(nums []int) []int {
 	return nil
 }
 
-//# Longest Consecutive Sequence
-//
-//Given an unsorted array of integers `nums`, return the length of the longest consecutive elements sequence.
-//
-//Must run in O(n) time.
-//
-//## Examples
-//
-//```
-//Input: nums = [100, 4, 200, 1, 3, 2]
-//Output: 4    (the sequence is [1, 2, 3, 4])
-//
-//Input: nums = [0, 3, 7, 2, 5, 8, 4, 6, 0, 1]
-//Output: 9    (the sequence is [0, 1, 2, 3, 4, 5, 6, 7, 8])
-//
-//Input: nums = []
-//Output: 0
-//```
-//
-//## Function Signature
-//
-//```go
-//func longestConsecutive(nums []int) int {
-//
-//}
-//```
-//
-//## Hint
-//
-//Put everything in a set. A number is the start of a sequence if num-1 is NOT in the set.
-
 func doLongestConsecutive() error {
 	tests := []struct {
 		nums []int
@@ -380,6 +350,11 @@ func longestConsecutive(nums []int) int {
 	return currentLargest
 }
 
+//# Valid Palindrome
+//
+//Given a string `s`, return `true` if it is a palindrome after converting all uppercase letters to lowercase and removing all non-alphanumeric characters.
+//
+
 func doIsPalindrome() error {
 	tests := []struct {
 		s    string
@@ -403,5 +378,13 @@ func doIsPalindrome() error {
 }
 
 func isPalindrome(s string) bool {
-	return false
+	reg := regexp.MustCompile("[^a-zA-Z0-9]+")
+	cleaned := reg.ReplaceAllString(s, "")
+	lower := strings.ToLower(cleaned)
+	for i := 0; i < len(lower)/2; i++ {
+		if lower[i] != lower[len(lower)-i-1] {
+			return false
+		}
+	}
+	return true
 }
