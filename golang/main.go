@@ -398,3 +398,46 @@ func isPalindrome(s string) bool {
 	}
 	return true
 }
+
+func doThreeSum() error {
+	tests := []struct {
+		nums []int
+		want [][]int
+	}{{
+		nums: []int{-1, 0, 1, 2, -1, -4},
+		want: [][]int{{-1, -1, 2}, {-1, 0, 1}},
+	}, {
+		nums: []int{0, 1, 1},
+		want: [][]int{},
+	}, {
+		nums: []int{0, 0, 0},
+		want: [][]int{{0, 0, 0}},
+	}}
+	for i, test := range tests {
+		got := threeSum(test.nums)
+		if len(got) != len(test.want) {
+			return fmt.Errorf("threeSum wrong at index %d got %v want %v", i, got, test.want)
+		}
+		for _, g := range got {
+			slices.Sort(g)
+		}
+		slices.SortFunc(got, func(a, b []int) int {
+			for k := range a {
+				if a[k] != b[k] {
+					return a[k] - b[k]
+				}
+			}
+			return 0
+		})
+		for j := range got {
+			if !slices.Equal(got[j], test.want[j]) {
+				return fmt.Errorf("threeSum wrong at index %d triplet %d got %v want %v", i, j, got[j], test.want[j])
+			}
+		}
+	}
+	return nil
+}
+
+func threeSum(nums []int) [][]int {
+	return nil
+}
