@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"regexp"
 	"slices"
 	"strings"
 )
@@ -378,13 +377,23 @@ func doIsPalindrome() error {
 }
 
 func isPalindrome(s string) bool {
-	reg := regexp.MustCompile("[^a-zA-Z0-9]+")
-	cleaned := reg.ReplaceAllString(s, "")
-	lower := strings.ToLower(cleaned)
-	for i := 0; i < len(lower)/2; i++ {
-		if lower[i] != lower[len(lower)-i-1] {
+	lower := strings.ToLower(s)
+	for i, j := 0, len(lower)-1; j > i; {
+		for ; i < len(lower); i++ {
+			if lower[i] >= 'a' && lower[i] <= 'z' {
+				break
+			}
+		}
+		for ; j > i; j-- {
+			if lower[j] >= 'a' && lower[j] <= 'z' {
+				break
+			}
+		}
+		if lower[i] != lower[j] {
 			return false
 		}
+		i++
+		j--
 	}
 	return true
 }
