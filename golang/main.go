@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println(doIsPalindrome())
+	fmt.Println(doThreeSum())
 }
 
 func doTwoSums() error {
@@ -349,11 +349,6 @@ func longestConsecutive(nums []int) int {
 	return currentLargest
 }
 
-//# Valid Palindrome
-//
-//Given a string `s`, return `true` if it is a palindrome after converting all uppercase letters to lowercase and removing all non-alphanumeric characters.
-//
-
 func doIsPalindrome() error {
 	tests := []struct {
 		s    string
@@ -399,6 +394,10 @@ func isPalindrome(s string) bool {
 	return true
 }
 
+//Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.
+//
+//The solution must not contain duplicate triplets.
+
 func doThreeSum() error {
 	tests := []struct {
 		nums []int
@@ -439,5 +438,44 @@ func doThreeSum() error {
 }
 
 func threeSum(nums []int) [][]int {
-	return nil
+	twoSums := make(map[int][][]int)
+	var threeSums [][]int
+	for i := 0; i < len(nums); i++ {
+	outer:
+		for j := 0; j < len(nums); j++ {
+			if j <= i {
+				continue
+			}
+			sum := nums[i] + nums[j]
+			for _, pair := range twoSums[sum] {
+				if pair[0] == nums[i] || pair[1] == nums[i] {
+					continue outer
+				}
+			}
+			pair := []int{i, j}
+			twoSums[sum] = append(twoSums[sum], pair)
+		}
+	}
+	found := make(map[int]struct{})
+	for i := 0; i < len(nums); i++ {
+		if _, f := found[i]; f {
+			continue
+		}
+		for k, v := range twoSums {
+			if nums[i]+k == 0 {
+				for _, pair := range v {
+					if pair[0] == i || pair[1] == i {
+						continue
+					}
+					three := []int{nums[pair[0]], nums[pair[1]], nums[i]}
+					threeSums = append(threeSums, three)
+					found[pair[0]] = struct{}{}
+					found[pair[1]] = struct{}{}
+					found[nums[i]] = struct{}{}
+					break
+				}
+			}
+		}
+	}
+	return threeSums
 }
