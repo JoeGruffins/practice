@@ -438,44 +438,27 @@ func doThreeSum() error {
 }
 
 func threeSum(nums []int) [][]int {
-	twoSums := make(map[int][][]int)
-	var threeSums [][]int
-	for i := 0; i < len(nums); i++ {
-	outer:
-		for j := 0; j < len(nums); j++ {
-			if j <= i {
-				continue
-			}
-			sum := nums[i] + nums[j]
-			for _, pair := range twoSums[sum] {
-				if pair[0] == nums[i] || pair[1] == nums[i] {
-					continue outer
-				}
-			}
-			pair := []int{i, j}
-			twoSums[sum] = append(twoSums[sum], pair)
-		}
-	}
-	found := make(map[int]struct{})
-	for i := 0; i < len(nums); i++ {
-		if _, f := found[i]; f {
+	var three [][]int
+	slices.Sort(nums)
+	for i := 0; i < len(nums)-1; i++ {
+		if i > 0 && nums[i] == nums[i-1] {
 			continue
 		}
-		for k, v := range twoSums {
-			if nums[i]+k == 0 {
-				for _, pair := range v {
-					if pair[0] == i || pair[1] == i {
-						continue
-					}
-					three := []int{nums[pair[0]], nums[pair[1]], nums[i]}
-					threeSums = append(threeSums, three)
-					found[pair[0]] = struct{}{}
-					found[pair[1]] = struct{}{}
-					found[nums[i]] = struct{}{}
-					break
-				}
+		j, k := i+1, len(nums)-1
+		for j < k {
+			sum := nums[i] + nums[j] + nums[k]
+			if sum < 0 {
+				j++
+				continue
 			}
+			if sum > 0 {
+				k--
+				continue
+			}
+			three = append(three, []int{nums[i], nums[j], nums[k]})
+			j++
+			k--
 		}
 	}
-	return threeSums
+	return three
 }
