@@ -378,16 +378,17 @@ func doIsPalindrome() error {
 
 func isPalindrome(s string) bool {
 	lower := strings.ToLower(s)
+	isAlpha := func(r byte) bool {
+		return r >= 'a' && r <= 'z' || r >= '0' && r <= '9'
+	}
 	for i, j := 0, len(lower)-1; j > i; {
-		for ; i < len(lower); i++ {
-			if lower[i] >= 'a' && lower[i] <= 'z' {
-				break
-			}
+		if !isAlpha(lower[i]) {
+			i++
+			continue
 		}
-		for ; j > i; j-- {
-			if lower[j] >= 'a' && lower[j] <= 'z' {
-				break
-			}
+		if !isAlpha(lower[j]) {
+			j--
+			continue
 		}
 		if lower[i] != lower[j] {
 			return false
