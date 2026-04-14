@@ -503,3 +503,27 @@ func maxArea(height []int) int {
 	}
 	return best
 }
+
+func doTrap() error {
+	tests := []struct {
+		height []int
+		want   int
+	}{{
+		height: []int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1},
+		want:   6,
+	}, {
+		height: []int{4, 2, 0, 3, 2, 5},
+		want:   9,
+	}}
+	for i, test := range tests {
+		got := trap(test.height)
+		if got != test.want {
+			return fmt.Errorf("trap wrong at index %d got %d want %d", i, got, test.want)
+		}
+	}
+	return nil
+}
+
+func trap(height []int) int {
+	return 0
+}
