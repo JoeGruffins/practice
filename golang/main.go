@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println(doTrap())
+	fmt.Println(doIsValid())
 }
 
 func doTwoSums() error {
@@ -495,8 +495,6 @@ func maxArea(height []int) int {
 	return best
 }
 
-// Given `n` non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
-
 func doTrap() error {
 	tests := []struct {
 		height []int
@@ -535,6 +533,15 @@ func trap(height []int) int {
 	return total
 }
 
+//# Valid Parentheses
+//
+//Given a string `s` containing just the characters `(`, `)`, `{`, `}`, `[` and `]`, determine if the input string is valid.
+//
+//A string is valid if:
+//- Open brackets are closed by the same type of brackets
+//- Open brackets are closed in the correct order
+//- Every close bracket has a corresponding open bracket
+
 func doIsValid() error {
 	tests := []struct {
 		s    string
@@ -563,5 +570,37 @@ func doIsValid() error {
 }
 
 func isValid(s string) bool {
-	return false
+	addV := func(b rune) (val, t int) {
+		switch b {
+		case '}':
+			return -1, 0
+		case '{':
+			return 1, 0
+		case ']':
+			return -1, 1
+		case '[':
+			return 1, 1
+		case ')':
+			return -1, 2
+		case '(':
+			return 1, 2
+		}
+		return 0, 0
+	}
+	var temp []int
+	for _, s := range s {
+		v, t := addV(s)
+		if v == -1 {
+			if len(temp) == 0 {
+				return false
+			}
+			if temp[len(temp)-1] != t {
+				return false
+			}
+			temp = temp[:len(temp)-1]
+		} else {
+			temp = append(temp, t)
+		}
+	}
+	return len(temp) == 0
 }
