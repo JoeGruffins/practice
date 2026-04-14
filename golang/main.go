@@ -604,3 +604,28 @@ func isValid(s string) bool {
 	}
 	return len(temp) == 0
 }
+
+func doMinStack() error {
+	s := &MinStack{}
+	s.Push(-2)
+	s.Push(0)
+	s.Push(-3)
+	if got := s.GetMin(); got != -3 {
+		return fmt.Errorf("GetMin wrong got %d want -3", got)
+	}
+	s.Pop()
+	if got := s.Top(); got != 0 {
+		return fmt.Errorf("Top wrong got %d want 0", got)
+	}
+	if got := s.GetMin(); got != -2 {
+		return fmt.Errorf("GetMin wrong got %d want -2", got)
+	}
+	return nil
+}
+
+type MinStack struct{}
+
+func (s *MinStack) Push(val int) {}
+func (s *MinStack) Pop()         {}
+func (s *MinStack) Top() int     { return 0 }
+func (s *MinStack) GetMin() int  { return 0 }
