@@ -462,3 +462,27 @@ func threeSum(nums []int) [][]int {
 	}
 	return three
 }
+
+func doMaxArea() error {
+	tests := []struct {
+		height []int
+		want   int
+	}{{
+		height: []int{1, 8, 6, 2, 5, 4, 8, 3, 7},
+		want:   49,
+	}, {
+		height: []int{1, 1},
+		want:   1,
+	}}
+	for i, test := range tests {
+		got := maxArea(test.height)
+		if got != test.want {
+			return fmt.Errorf("maxArea wrong at index %d got %d want %d", i, got, test.want)
+		}
+	}
+	return nil
+}
+
+func maxArea(height []int) int {
+	return 0
+}
