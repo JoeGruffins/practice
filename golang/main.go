@@ -489,14 +489,17 @@ func doMaxArea() error {
 }
 
 func maxArea(height []int) int {
-	var best int
-	for i := 0; i < len(height); i++ {
-		for j := i + 1; j < len(height); j++ {
-			n := (j - i) * min(height[i], height[j])
-			if n > best {
-				best = n
-			}
+	i, j, best := 0, len(height)-1, 0
+	for j > i {
+		n := (j - i) * min(height[i], height[j])
+		if n > best {
+			best = n
 		}
+		if height[i] > height[j] {
+			j--
+			continue
+		}
+		i++
 	}
 	return best
 }
