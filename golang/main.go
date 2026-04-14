@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println(doIsValid())
+	fmt.Println(doMinStack())
 }
 
 func doTwoSums() error {
@@ -605,6 +605,16 @@ func isValid(s string) bool {
 	return len(temp) == 0
 }
 
+//# Min Stack
+//
+//Design a stack that supports push, pop, top, and retrieving the minimum element, all in O(1) time.
+//
+//Implement the following:
+//- `Push(val)` - pushes the element onto the stack
+//- `Pop()` - removes the element on top of the stack
+//- `Top()` - gets the top element
+//- `GetMin()` - retrieves the minimum element in the stack
+
 func doMinStack() error {
 	s := &MinStack{}
 	s.Push(-2)
@@ -623,9 +633,40 @@ func doMinStack() error {
 	return nil
 }
 
-type MinStack struct{}
+type MinStack struct {
+	i      int
+	nums   map[int]int
+	sorted []int
+}
 
-func (s *MinStack) Push(val int) {}
-func (s *MinStack) Pop()         {}
-func (s *MinStack) Top() int     { return 0 }
-func (s *MinStack) GetMin() int  { return 0 }
+func (s *MinStack) Push(val int) {
+	if s.nums == nil {
+		s.nums = make(map[int]int)
+	}
+	s.i++
+	s.nums[s.i] = val
+	for i := 0; i < len(s.sorted); i++ {
+		if val < s.sorted[i] {
+			s.sorted = slices.Insert(s.sorted, i, val)
+			return
+		}
+	}
+	s.sorted = append(s.sorted, val)
+}
+func (s *MinStack) Pop() {
+	if s.i == 0 {
+		return
+	}
+	delete(s.nums, s.i)
+	s.i--
+	s.sorted = s.sorted[1:]
+}
+func (s *MinStack) Top() int {
+	return s.nums[s.i]
+}
+func (s *MinStack) GetMin() int {
+	if len(s.sorted) == 0 {
+		return 0
+	}
+	return s.sorted[0]
+}
