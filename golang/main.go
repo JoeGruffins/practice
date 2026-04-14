@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println(doThreeSum())
+	fmt.Println(doMaxArea())
 }
 
 func doTwoSums() error {
@@ -394,10 +394,6 @@ func isPalindrome(s string) bool {
 	return true
 }
 
-//Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.
-//
-//The solution must not contain duplicate triplets.
-
 func doThreeSum() error {
 	tests := []struct {
 		nums []int
@@ -463,6 +459,15 @@ func threeSum(nums []int) [][]int {
 	return three
 }
 
+//# Container With Most Water
+//
+//Given an integer array `height` of length `n`, where each element represents the height of a vertical line at that position. Find two lines that together with the x-axis form a container that holds the most water.
+//
+//Return the maximum amount of water the container can store.
+
+//Input: height = [1, 8, 6, 2, 5, 4, 8, 3, 7]
+//Output: 49    (between height[1]=8 and height[8]=7, width=7, area=7*7=49)
+
 func doMaxArea() error {
 	tests := []struct {
 		height []int
@@ -484,5 +489,14 @@ func doMaxArea() error {
 }
 
 func maxArea(height []int) int {
-	return 0
+	var best int
+	for i := 0; i < len(height); i++ {
+		for j := i + 1; j < len(height); j++ {
+			n := (j - i) * min(height[i], height[j])
+			if n > best {
+				best = n
+			}
+		}
+	}
+	return best
 }
