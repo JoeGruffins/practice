@@ -634,39 +634,34 @@ func doMinStack() error {
 }
 
 type MinStack struct {
-	i      int
-	nums   map[int]int
-	sorted []int
+	stack    []int
+	minStack []int
 }
 
 func (s *MinStack) Push(val int) {
-	if s.nums == nil {
-		s.nums = make(map[int]int)
+	s.stack = append(s.stack, val)
+	if len(s.minStack) == 0 || val < s.minStack[len(s.minStack)-1] {
+		s.minStack = append(s.minStack, val)
+	} else {
+		s.minStack = append(s.minStack, s.minStack[len(s.minStack)-1])
 	}
-	s.i++
-	s.nums[s.i] = val
-	for i := 0; i < len(s.sorted); i++ {
-		if val < s.sorted[i] {
-			s.sorted = slices.Insert(s.sorted, i, val)
-			return
-		}
-	}
-	s.sorted = append(s.sorted, val)
 }
 func (s *MinStack) Pop() {
-	if s.i == 0 {
+	if len(s.stack) == 0 {
 		return
 	}
-	delete(s.nums, s.i)
-	s.i--
-	s.sorted = s.sorted[1:]
+	s.stack = s.stack[:len(s.stack)-1]
+	s.minStack = s.minStack[:len(s.minStack)-1]
 }
 func (s *MinStack) Top() int {
-	return s.nums[s.i]
-}
-func (s *MinStack) GetMin() int {
-	if len(s.sorted) == 0 {
+	if len(s.stack) == 0 {
 		return 0
 	}
-	return s.sorted[0]
+	return s.stack[len(s.stack)-1]
+}
+func (s *MinStack) GetMin() int {
+	if len(s.minStack) == 0 {
+		return 0
+	}
+	return s.minStack[len(s.minStack)-1]
 }
