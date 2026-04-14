@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println(doMaxArea())
+	fmt.Println(doTrap())
 }
 
 func doTwoSums() error {
@@ -459,15 +459,6 @@ func threeSum(nums []int) [][]int {
 	return three
 }
 
-//# Container With Most Water
-//
-//Given an integer array `height` of length `n`, where each element represents the height of a vertical line at that position. Find two lines that together with the x-axis form a container that holds the most water.
-//
-//Return the maximum amount of water the container can store.
-
-//Input: height = [1, 8, 6, 2, 5, 4, 8, 3, 7]
-//Output: 49    (between height[1]=8 and height[8]=7, width=7, area=7*7=49)
-
 func doMaxArea() error {
 	tests := []struct {
 		height []int
@@ -504,6 +495,8 @@ func maxArea(height []int) int {
 	return best
 }
 
+// Given `n` non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+
 func doTrap() error {
 	tests := []struct {
 		height []int
@@ -525,5 +518,31 @@ func doTrap() error {
 }
 
 func trap(height []int) int {
-	return 0
+	var total int
+	bL := [2]int{height[0], 0}
+	findRight := func(to int) [2]int {
+		var best [2]int
+		for i := len(height) - 1; i > to; i-- {
+			if height[i] > best[0] {
+				best[0] = height[i]
+				best[1] = i
+			}
+		}
+		return best
+	}
+	bR := findRight(1)
+	for i := 1; i < len(height)-1; i++ {
+		if i > bR[1] {
+			bR = findRight(i)
+		}
+		n := height[i] - min(bL[0], bR[0])
+		if n < 0 {
+			total -= n
+		}
+		if height[i] > bL[0] {
+			bL[0] = height[i]
+			bL[1] = i
+		}
+	}
+	return total
 }
