@@ -519,29 +519,17 @@ func doTrap() error {
 
 func trap(height []int) int {
 	var total int
-	bL := [2]int{height[0], 0}
-	findRight := func(to int) [2]int {
-		var best [2]int
-		for i := len(height) - 1; i > to; i-- {
-			if height[i] > best[0] {
-				best[0] = height[i]
-				best[1] = i
-			}
-		}
-		return best
-	}
-	bR := findRight(1)
-	for i := 1; i < len(height)-1; i++ {
-		if i > bR[1] {
-			bR = findRight(i)
-		}
-		n := height[i] - min(bL[0], bR[0])
-		if n < 0 {
-			total -= n
-		}
-		if height[i] > bL[0] {
-			bL[0] = height[i]
-			bL[1] = i
+	l, r := 0, len(height)-1
+	maxL, maxR := height[l], height[r]
+	for l < r {
+		if maxL < maxR {
+			l++
+			maxL = max(maxL, height[l])
+			total += maxL - height[l]
+		} else {
+			r--
+			maxR = max(maxR, height[r])
+			total += maxR - height[r]
 		}
 	}
 	return total
