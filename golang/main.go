@@ -534,3 +534,34 @@ func trap(height []int) int {
 	}
 	return total
 }
+
+func doIsValid() error {
+	tests := []struct {
+		s    string
+		want bool
+	}{{
+		s:    "()",
+		want: true,
+	}, {
+		s:    "()[]{}",
+		want: true,
+	}, {
+		s: "(]",
+	}, {
+		s: "([)]",
+	}, {
+		s:    "{[]}",
+		want: true,
+	}}
+	for i, test := range tests {
+		got := isValid(test.s)
+		if got != test.want {
+			return fmt.Errorf("isValid wrong at index %d got %v want %v", i, got, test.want)
+		}
+	}
+	return nil
+}
+
+func isValid(s string) bool {
+	return false
+}
