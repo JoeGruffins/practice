@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println(doMinStack())
+	fmt.Println(doTwoSums)
 }
 
 func doTwoSums() error {
@@ -29,37 +29,15 @@ func doTwoSums() error {
 		output: []int{0, 1},
 	}}
 	for i, test := range tests {
-		output := bruteTwoSum(test.inputs, test.target)
+		output := twoSum(test.inputs, test.target)
 		if !slices.Equal(test.output, output) {
 			return fmt.Errorf("brute force bad output at index %d got %v want %v", i, output, test.output)
 		}
-		output = optimalTwoSum(test.inputs, test.target)
-		if !slices.Equal(test.output, output) {
-			return fmt.Errorf("optimal bad output at index %d got %v want %v", i, output, test.output)
-		}
 	}
 	return nil
 }
 
-func bruteTwoSum(nums []int, target int) []int {
-	for i := 0; i < len(nums); i++ {
-		for j := i + 1; j < len(nums); j++ {
-			if nums[i]+nums[j] == target {
-				return []int{i, j}
-			}
-		}
-	}
-	return nil
-}
-
-func optimalTwoSum(nums []int, target int) []int {
-	want := make(map[int]int)
-	for i := 0; i < len(nums); i++ {
-		if widx, ok := want[nums[i]]; ok {
-			return []int{widx, i}
-		}
-		want[target-nums[i]] = i
-	}
+func twoSum(nums []int, target int) []int {
 	return nil
 }
 
@@ -98,19 +76,6 @@ func doIsAnagram() error {
 }
 
 func isAnagram(s string, t string) bool {
-	if len(s) != len(t) {
-		return false
-	}
-	seen := make(map[rune]int)
-	for _, r := range s {
-		seen[r]++
-	}
-	for _, r := range t {
-		if seen[r] == 0 {
-			return false
-		}
-		seen[r]--
-	}
 	return true
 }
 
@@ -137,13 +102,6 @@ func doContainsDuplicate() error {
 }
 
 func containsDuplicate(nums []int) bool {
-	seen := make(map[int]struct{})
-	for _, v := range nums {
-		if _, has := seen[v]; has {
-			return true
-		}
-		seen[v] = struct{}{}
-	}
 	return false
 }
 
@@ -189,18 +147,6 @@ func doGroupAnagrams() error {
 }
 
 func groupAnagrams(strs []string) (grouped [][]string) {
-	anagrams := make(map[[26]byte][]string)
-	aVal := byte('a')
-	for _, w := range strs {
-		key := [26]byte{}
-		for _, r := range w {
-			key[byte(r)-aVal]++
-		}
-		anagrams[key] = append(anagrams[key], w)
-	}
-	for _, group := range anagrams {
-		grouped = append(grouped, group)
-	}
 	return
 }
 
@@ -237,48 +183,8 @@ func doTopKFrequent() error {
 }
 
 func topKFrequent(nums []int, n int) []int {
-	seen := make(map[int]int)
-	for _, v := range nums {
-		seen[v]++
-	}
-	buckets := make([][]int, len(nums)+1)
-	for k, v := range seen {
-		buckets[v] = append(buckets[v], k)
-	}
-	var result []int
-	for i := len(buckets) - 1; i >= 0 && len(result) < n; i-- {
-		result = append(result, buckets[i]...)
-	}
-	return result
+	return nil
 }
-
-//# Product of Array Except Self
-//
-//Given an integer array `nums`, return an array `answer` where `answer[i]` is equal to the product of all the elements of `nums` except `nums[i]`.
-//
-//You must solve it without using division.
-//
-//## Examples
-//
-//```
-//Input: nums = [1, 2, 3, 4]
-//Output: [24, 12, 8, 6]
-//
-//Input: nums = [-1, 1, 0, -3, 3]
-//Output: [0, 0, 9, 0, 0]
-//```
-//
-//## Function Signature
-//
-//```go
-//func productExceptSelf(nums []int) []int {
-//
-//}
-//```
-//
-//## Hint
-//
-//Think about what's to the left of each element and what's to the right.
 
 func doProductExceptSelf() error {
 	tests := []struct {
@@ -328,25 +234,7 @@ func doLongestConsecutive() error {
 }
 
 func longestConsecutive(nums []int) int {
-	currentLargest := 0
-	set := make(map[int]struct{})
-	for _, n := range nums {
-		set[n] = struct{}{}
-	}
-	for k := range set {
-		if _, has := set[k-1]; !has {
-			delete(set, k)
-			i := 1
-			for _, has := set[k+i]; has; _, has = set[k+i] {
-				delete(set, k+i)
-				i++
-			}
-			if i > currentLargest {
-				currentLargest = i
-			}
-		}
-	}
-	return currentLargest
+	return 0
 }
 
 func doIsPalindrome() error {
@@ -372,25 +260,6 @@ func doIsPalindrome() error {
 }
 
 func isPalindrome(s string) bool {
-	lower := strings.ToLower(s)
-	isAlpha := func(r byte) bool {
-		return r >= 'a' && r <= 'z' || r >= '0' && r <= '9'
-	}
-	for i, j := 0, len(lower)-1; j > i; {
-		if !isAlpha(lower[i]) {
-			i++
-			continue
-		}
-		if !isAlpha(lower[j]) {
-			j--
-			continue
-		}
-		if lower[i] != lower[j] {
-			return false
-		}
-		i++
-		j--
-	}
 	return true
 }
 
@@ -434,29 +303,7 @@ func doThreeSum() error {
 }
 
 func threeSum(nums []int) [][]int {
-	var three [][]int
-	slices.Sort(nums)
-	for i := 0; i < len(nums)-1; i++ {
-		if i > 0 && nums[i] == nums[i-1] {
-			continue
-		}
-		j, k := i+1, len(nums)-1
-		for j < k {
-			sum := nums[i] + nums[j] + nums[k]
-			if sum < 0 {
-				j++
-				continue
-			}
-			if sum > 0 {
-				k--
-				continue
-			}
-			three = append(three, []int{nums[i], nums[j], nums[k]})
-			j++
-			k--
-		}
-	}
-	return three
+	return nil
 }
 
 func doMaxArea() error {
@@ -480,19 +327,7 @@ func doMaxArea() error {
 }
 
 func maxArea(height []int) int {
-	i, j, best := 0, len(height)-1, 0
-	for j > i {
-		n := (j - i) * min(height[i], height[j])
-		if n > best {
-			best = n
-		}
-		if height[i] > height[j] {
-			j--
-			continue
-		}
-		i++
-	}
-	return best
+	return 0
 }
 
 func doTrap() error {
@@ -516,31 +351,8 @@ func doTrap() error {
 }
 
 func trap(height []int) int {
-	var total int
-	l, r := 0, len(height)-1
-	maxL, maxR := height[l], height[r]
-	for l < r {
-		if maxL < maxR {
-			l++
-			maxL = max(maxL, height[l])
-			total += maxL - height[l]
-		} else {
-			r--
-			maxR = max(maxR, height[r])
-			total += maxR - height[r]
-		}
-	}
-	return total
+	return 0
 }
-
-//# Valid Parentheses
-//
-//Given a string `s` containing just the characters `(`, `)`, `{`, `}`, `[` and `]`, determine if the input string is valid.
-//
-//A string is valid if:
-//- Open brackets are closed by the same type of brackets
-//- Open brackets are closed in the correct order
-//- Every close bracket has a corresponding open bracket
 
 func doIsValid() error {
 	tests := []struct {
@@ -570,39 +382,7 @@ func doIsValid() error {
 }
 
 func isValid(s string) bool {
-	addV := func(b rune) (val, t int) {
-		switch b {
-		case '}':
-			return -1, 0
-		case '{':
-			return 1, 0
-		case ']':
-			return -1, 1
-		case '[':
-			return 1, 1
-		case ')':
-			return -1, 2
-		case '(':
-			return 1, 2
-		}
-		return 0, 0
-	}
-	var temp []int
-	for _, s := range s {
-		v, t := addV(s)
-		if v == -1 {
-			if len(temp) == 0 {
-				return false
-			}
-			if temp[len(temp)-1] != t {
-				return false
-			}
-			temp = temp[:len(temp)-1]
-		} else {
-			temp = append(temp, t)
-		}
-	}
-	return len(temp) == 0
+	return false
 }
 
 //# Min Stack
@@ -634,34 +414,15 @@ func doMinStack() error {
 }
 
 type MinStack struct {
-	stack    []int
-	minStack []int
 }
 
 func (s *MinStack) Push(val int) {
-	s.stack = append(s.stack, val)
-	if len(s.minStack) == 0 || val < s.minStack[len(s.minStack)-1] {
-		s.minStack = append(s.minStack, val)
-	} else {
-		s.minStack = append(s.minStack, s.minStack[len(s.minStack)-1])
-	}
 }
 func (s *MinStack) Pop() {
-	if len(s.stack) == 0 {
-		return
-	}
-	s.stack = s.stack[:len(s.stack)-1]
-	s.minStack = s.minStack[:len(s.minStack)-1]
 }
 func (s *MinStack) Top() int {
-	if len(s.stack) == 0 {
-		return 0
-	}
-	return s.stack[len(s.stack)-1]
+	return 0
 }
 func (s *MinStack) GetMin() int {
-	if len(s.minStack) == 0 {
-		return 0
-	}
-	return s.minStack[len(s.minStack)-1]
+	return 0
 }
