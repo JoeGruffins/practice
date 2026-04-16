@@ -7,7 +7,15 @@ import (
 )
 
 func main() {
-	fmt.Println(doTwoSums)
+	fmt.Println(doTwoSums())
+	fmt.Println(doIsAnagram())
+	fmt.Println(doContainsDuplicate())
+	// fmt.Println(doGroupAnagrams())
+	fmt.Println(doTopKFrequent())
+	fmt.Println(doProductExceptSelf())
+	fmt.Println(doLongestConsecutive())
+	fmt.Println(doIsPalindrome())
+	fmt.Println(doThreeSum())
 }
 
 func doTwoSums() error {
@@ -37,7 +45,22 @@ func doTwoSums() error {
 	return nil
 }
 
+// Given an array of integers `nums` and an integer `target`, return the indices of the two numbers that add up to `target`.
+//
+// - Each input has exactly one solution
+// - You can't use the same element twice
+// - Return the answer in any order
+
 func twoSum(nums []int, target int) []int {
+	diffs := make(map[int]int)
+	for i := 0; i < len(nums); i++ {
+		n := nums[i]
+		if j, has := diffs[n]; has {
+			return []int{j, i}
+		}
+		diff := target - nums[i]
+		diffs[diff] = i
+	}
 	return nil
 }
 
@@ -75,7 +98,24 @@ func doIsAnagram() error {
 	return nil
 }
 
+// Given two strings `s` and `t`, return `true` if `t` is an anagram of `s`, and `false` otherwise.
+//
+// An anagram uses all the original letters exactly once, rearranged.
+
 func isAnagram(s string, t string) bool {
+	if len(s) != len(t) {
+		return false
+	}
+	found := make(map[byte]int)
+	for i := 0; i < len(s); i++ {
+		found[s[i]]++
+		found[t[i]]--
+	}
+	for _, v := range found {
+		if v != 0 {
+			return false
+		}
+	}
 	return true
 }
 
@@ -101,7 +141,16 @@ func doContainsDuplicate() error {
 	return nil
 }
 
+// Given an integer array `nums`, return `true` if any value appears at least twice in the array, and `false` if every element is distinct.
+
 func containsDuplicate(nums []int) bool {
+	seen := make(map[int]struct{})
+	for _, n := range nums {
+		if _, has := seen[n]; has {
+			return true
+		}
+		seen[n] = struct{}{}
+	}
 	return false
 }
 
@@ -146,6 +195,8 @@ func doGroupAnagrams() error {
 	return nil
 }
 
+// Given an array of strings `strs`, group the anagrams together. You can return the answer in any order.
+
 func groupAnagrams(strs []string) (grouped [][]string) {
 	return
 }
@@ -182,8 +233,25 @@ func doTopKFrequent() error {
 	return nil
 }
 
+// Given an integer array `nums` and an integer `k`, return the `k` most frequent elements. You may return the answer in any order.
+
 func topKFrequent(nums []int, n int) []int {
-	return nil
+	amts := make(map[int]int)
+	for _, num := range nums {
+		amts[num]++
+	}
+	bucket := make([][]int, len(nums)+1)
+	for k, v := range amts {
+		bucket[v] = append(bucket[v], k)
+	}
+	var highest []int
+	for i := len(bucket) - 1; i > 0 && len(highest) < n; i-- {
+		ns := bucket[i]
+		for j := 0; j < len(ns) && len(highest) < n; j++ {
+			highest = append(highest, ns[j])
+		}
+	}
+	return highest
 }
 
 func doProductExceptSelf() error {
@@ -206,8 +274,22 @@ func doProductExceptSelf() error {
 	return nil
 }
 
+// Given an integer array `nums`, return an array `answer` where `answer[i]` is equal to the product of all the elements of `nums` except `nums[i]`.
+//
+// You must solve it without using division.
+
 func productExceptSelf(nums []int) []int {
-	return nil
+	left, right := make([]int, len(nums)), make([]int, len(nums))
+	left[0] = 1
+	for i := 1; i < len(nums); i++ {
+		left[i] = left[i-1] * nums[i-1]
+	}
+	r := 1
+	for i := len(nums) - 1; i >= 0; i-- {
+		right[i] = left[i] * r
+		r *= nums[i]
+	}
+	return right
 }
 
 func doLongestConsecutive() error {
@@ -233,8 +315,29 @@ func doLongestConsecutive() error {
 	return nil
 }
 
+// Given an unsorted array of integers `nums`, return the length of the longest consecutive elements sequence.
+//
+// Must run in O(n) time.
+
 func longestConsecutive(nums []int) int {
-	return 0
+	var highest int
+	set := make(map[int]struct{})
+	for _, n := range nums {
+		set[n] = struct{}{}
+	}
+	for k, _ := range set {
+		if _, has := set[k-1]; !has {
+			for i := 1; ; i++ {
+				if _, has := set[k+i]; !has {
+					if i > highest {
+						highest = i
+						break
+					}
+				}
+			}
+		}
+	}
+	return highest
 }
 
 func doIsPalindrome() error {
@@ -260,6 +363,26 @@ func doIsPalindrome() error {
 }
 
 func isPalindrome(s string) bool {
+	lower := strings.ToLower(s)
+	i, j := 0, len(lower)-1
+	isAlpha := func(b byte) bool {
+		return (b >= 'a' && b <= 'z') || (b >= '0' && b <= '9')
+	}
+	for i < j {
+		if !isAlpha(lower[i]) {
+			i++
+			continue
+		}
+		if !isAlpha(lower[j]) {
+			j--
+			continue
+		}
+		if lower[i] != lower[j] {
+			return false
+		}
+		i++
+		j--
+	}
 	return true
 }
 
@@ -302,8 +425,34 @@ func doThreeSum() error {
 	return nil
 }
 
+// Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.
+//
+// The solution must not contain duplicate triplets.
+
 func threeSum(nums []int) [][]int {
-	return nil
+	var three [][]int
+	slices.Sort(nums)
+	for i := 0; i < len(nums); i++ {
+		if i > 0 && nums[i] == nums[i-1] {
+			continue
+		}
+		j, k := i+1, len(nums)-1
+		for j < k {
+			sum := nums[j] + nums[k] + nums[i]
+			if sum > 0 {
+				j++
+				continue
+			}
+			if sum < 0 {
+				k--
+				continue
+			}
+			three = append(three, []int{nums[j], nums[k], nums[i]})
+			j++
+			k--
+		}
+	}
+	return three
 }
 
 func doMaxArea() error {
