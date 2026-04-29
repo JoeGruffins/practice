@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bxjudj5s87f1v"]
+
+[ext_resource type="Script" uid="uid://h1iw7nfqmpai" path="res://character_body_2d.gd" id="1_onrkg"]
+[ext_resource type="Texture2D" uid="uid://vraesmdpwwvk" path="res://mario.svg" id="2_i3pqv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hqtel"]
+size = Vector2(80, 121)
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=2046338712]
+position = Vector2(-16, -16)
+script = ExtResource("1_onrkg")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1963027069]
+position = Vector2(50.625, 71.625)
+scale = Vector2(0.20576409, 0.2620482)
+texture = ExtResource("2_i3pqv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=624283112]
+position = Vector2(49, 76.5)
+shape = SubResource("RectangleShape2D_hqtel")
